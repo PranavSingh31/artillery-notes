@@ -194,3 +194,80 @@ these commands would execute the corresponding urls only
 `DEBUG=http:request,http:response artillery run petstore.yml`
 
 `DEBUG=http* artillery run petstore.yml`
+
+
+## Expectations
+
+- Assertions via Plugins
+- use `npm install artillery-plugin-expect`
+- `DEBUG=plugin:expect artillery run pets.yaml`
+
+Expectation in artillery
+
+- statusCode
+- hasHeader
+- contentType
+- headerEquals
+- hasProperty and notHasProperty
+- matchesRegexp
+- equals
+
+```
+config:
+  target: http://localhost:9966/petclinic/api
+  plugins:
+    expect: {}  #declation of plugin
+  
+  environments:
+    load:  
+      phases:
+        - name: smoke_load_testing
+          duration: 5
+          arrivalRate: 10
+      
+    functional:
+      phases:
+        - name: func_smoke_testing
+          duration: 1
+          arrivalCount: 1
+
+  payload:
+    path: ./test-data/vets-data.csv
+    order: sequence           # default: random
+    loadAll: true             
+    skipHeader: true          # default: false  
+    delimiter: ","            # default: ,
+    skipEmptyLines: true      # default: true
+    fields:
+      - "firstName"
+      - "lastName"
+      - "id"
+      - "specialtyName"
+
+scenarios:
+- name: petclinic_add_vets
+  flow:
+  - post:
+      url: /vets
+      headers:
+        Content-Type: application/json
+      json:
+        firstName: "{{ firstName }}"
+        lastName: "{{ lastName }}"
+        id: "{{ id }}"
+        specialties:
+          -
+            id: "{{ id }}"
+            name: "{{ specialtyName }}"
+      capture:
+        json: "$.id"
+        as: "id"
+
+      expect:				#expected items
+        - matchesRegexp: .+ 
+  - get:
+      url: "/vets/{{ id }}"     
+      expect:				#expected items
+      - statusCode: 200
+      - contentType: json
+```
