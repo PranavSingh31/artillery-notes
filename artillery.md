@@ -188,6 +188,9 @@ scenarios:
 these commands would execute the corresponding urls only
 
 `DEBUG=http:request artillery run petstore.yml`
+
 `DEBUG=http:response artillery run petstore.yml`
+
 `DEBUG=http:request,http:response artillery run petstore.yml`
+
 `DEBUG=http* artillery run petstore.yml`
