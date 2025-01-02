@@ -151,6 +151,7 @@ scenarios:
 
 ---
 
+
 ## Correlation
 
 Handling dynamic data in the response.
@@ -159,9 +160,25 @@ Handling dynamic data in the response.
 
 ### Example:
 
-Use tools like `JSONPath`, `XPath`, `Regex`, or `selector` (using the Cheerio library) to extract values and use placeholders like `{{ firstName }}` in subsequent requests.
-
 ```yaml
-capture:
-  - json: "$.data.firstName"
-    as: firstName
+config:
+  target: https://example.com
+
+scenarios:
+  - name: example_dot_com
+    flow:
+      - get:
+          url: "/"
+          capture:
+            - strict: true
+              regexp: "<title>(.+?)<\\/title>"
+              as: "extract_title"
+              group: 1
+              flags: g
+            - strict: false
+              header: "content-length"
+              as: "extract_content_length"
+              group: 1
+      - log: "Extracted Title: {{ extract_title }}"
+      - log: "Extracted Content Length: {{ extract_content_length }}"
+```
