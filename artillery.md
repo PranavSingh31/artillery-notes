@@ -302,6 +302,32 @@ environments:
 - generate a JSON
 - then, convert  it to HTML
   
-	`artillery run --output loadtest-result.json pets.yaml`
+	`artillery run --output loadtest-result.json pets.yaml` then
         `artillery report loadtest-result.json`
+
+## Artillery using Docker
+
+- official image `docker pull artilleryio/artillery`
+- WORKDIR `/home/node/artillery`
+- ENTRYPOINT ["/home/node/artillery/bin/run"]
+
+`docket run -it --entrypoint /bin/sh artilleryio/artillery`
+
+`docker run -it -v ${PWD}:/scripts artilleryio/artillery:latest run /scripts/pets.yml --output /scripts/loadtest-run.json`
+
+
+## Probe
+- like curl command
+
+`artillery probe --help`
+
+`artillery probe http://localhost:8080/petclinic/api/owners`
+
+displays the response header and timing of requests in a beautiful way
+
+`artillery probe http://localhost:8080/petclinic/api/owners -b -p`
+
+-b to display body tag, -p to make it look prettier, command displays the response in JSON/ other format
+
+
 
