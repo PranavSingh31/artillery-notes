@@ -212,7 +212,7 @@ Expectation in artillery
 - matchesRegexp
 - equals
 
-```
+```yaml
 config:
   target: http://localhost:9966/petclinic/api
   plugins:
