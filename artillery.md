@@ -271,3 +271,37 @@ scenarios:
       - statusCode: 200
       - contentType: json
 ```
+## Environments
+
+- enables reusability
+- same script for Function Testing and Performance Testing
+
+```yaml
+
+#run load or functional as per your requirement
+
+environments:
+  load:
+    phases:
+      - name: smoke_load_testing
+        duration: 10
+        arrivalRate: 10
+  functional:
+    phases:
+      - name: smoke_func_testing
+        duration: 1
+        arrivalCount: 1
+
+```
+
+`artillery run --environment load vets_extraction.yml --output smoke.json
+
+## HTML Reporting
+
+- involves two-step process
+- generate a JSON
+- then, convert  it to HTML
+  
+	`artillery run --output loadtest-result.json pets.yaml`
+
+        `artillery report loadtest-result.json`
