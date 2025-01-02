@@ -303,5 +303,5 @@ environments:
 - then, convert  it to HTML
   
 	`artillery run --output loadtest-result.json pets.yaml`
-
         `artillery report loadtest-result.json`
+
